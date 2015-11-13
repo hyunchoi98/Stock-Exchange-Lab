@@ -1,30 +1,48 @@
+import java.util.Queue;
+
 
 public class Trader {
 
+	Brokerage brokerage;
+	String name, pswd;
+	Queue<String> mailbox;	
 	
-	//Constructs a new trader, affiliated with a given brockerage, 
+	//Constructs a new trader, affiliated with a given brokerage, 
 	//with a given screen name and password.
-	public Trader(Brokerage brokerage, String name, String pswd)
-	{}
+	public Trader(Brokerage brokerage, String name, String pswd) {
+		this.brokerage = brokerage;
+		this.name = name;
+		this.pswd = pswd;
+	}
 	
 	//Returns the screen name for this trader.
-	public String getName(){}
+	public String getName(){
+		return name;
+	}
 	
 	//Returns the password for this trader.
-	public String getPassword(){}
+	public String getPassword(){
+		return pswd;
+	}
 	
 	//Compares this trader to another by comparing
 	//their screen names case blind.
-	public int compareTo(Trader other){}
+	public int compareTo(Trader other){
+		return name.compareToIgnoreCase(other.getName());
+	}
 	
 	//Indicates whether some other trader is "equal to" this one, based 
 	//on comparing their screen names case blind. 
-	public boolean equals(Object other){}
+	public boolean equals(Object other){
+		return name.equalsIgnoreCase(((Trader) other).getName());
+	}
 	
 	//Creates a new TraderWindow for this trader and saves a reference 
 	//to it in myWindow. Removes and displays all the messages, if any, 
 	//from this trader's mailbox by calling myWindow.show(msg) for each message.
-	public void openWindow(){}
+	public void openWindow(){
+		
+	}
 	
 	//Returns true if this trader has any messages in its mailbox.
 	public boolean hasMessages(){}
@@ -41,7 +59,9 @@ public class Trader {
 	public void getQuote(String symbol){}
 	
 	//Places a given order with the brokerage by calling brokerage's placeOrder.
-	public void placeOrder(TradeOrder order)
+	public void placeOrder(TradeOrder order) {
+		
+	}
 	
 	//Logs out this trader. Calls brokerage's logout for this trader. 
 	//Sets myWindow to null, called when window closed
