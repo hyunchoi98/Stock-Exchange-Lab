@@ -42,7 +42,7 @@ public class TradeOrder {
 	
 	//Returns true if this is a buy order; otherwise returns false.
 	public boolean isBuy() {
-		return buyOrder
+		return buyOrder;
 	}
 	
 	//Returns true if this is a limit order; otherwise returns false.
@@ -57,13 +57,13 @@ public class TradeOrder {
 	
 	//Returns true if this is a sell order; otherwise returns false.
 	public boolean isSell() {
-		
+		return !buyOrder;
 		
 	}
 	
 	//Subtracts a given number of shares from the total number of shares in this trade order.
 	public void subtractShares(int shares){
-		
+		numShares -= shares;
 	}
 	
 }
