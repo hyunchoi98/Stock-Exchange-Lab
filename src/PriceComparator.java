@@ -1,5 +1,7 @@
+import java.util.Comparator;
 
-public class PriceComparator {
+
+public class PriceComparator implements Comparator {
 
 	private boolean ascending;
 	
@@ -20,18 +22,18 @@ public class PriceComparator {
 	//1 if order1 is limit and order2 is market.
 	//if both are limit orders, convert to cents and take 
 	//the difference
-	public int compare(TradeOrder order1, TradeOrder order2) {
-		if (order1.isMarket() && order2.isMarket()) {
+	public int compare(Object order1, Object order2) {
+		if (((TradeOrder)order1).isMarket() && ((TradeOrder)order2).isMarket()) {
 			return 0;
 		}
-		else if (order1.isMarket() && order2.isLimit()) {
+		else if (((TradeOrder)order1).isMarket() && ((TradeOrder)order2).isLimit()) {
 			return -1;
 		}
-		else if (order1.isLimit() && order2.isMarket()) {
+		else if (((TradeOrder)order1).isLimit() && ((TradeOrder)order2).isMarket()) {
 			return 1;
 		}
 		else {
-			int diff = (int) order1.getPrice() - (int) order2.getPrice();
+			int diff = (int) ((TradeOrder)order1).getPrice() - (int) ((TradeOrder)order2).getPrice();
 			if (ascending)
 				return diff;
 			else
