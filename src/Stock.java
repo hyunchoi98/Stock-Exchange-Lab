@@ -13,8 +13,8 @@ public class Stock {
 	private double highestSell;
 	private int volumeDay;
 	private double stockPrice;
-	Queue <TradeOrder> buy = new PriorityQueue<TradeOrder>();
-	Queue <TradeOrder> sell = new PriorityQueue<TradeOrder>();
+	Queue <TradeOrder> buy;
+	Queue <TradeOrder> sell;
 	
 	
 	
@@ -31,8 +31,8 @@ public class Stock {
 		highestSell = price;
 		stockPrice = price;
 		volumeDay = 0;
-		Queue <TradeOrder> buy = new PriorityQueue<TradeOrder>(10, new PriceComparator());
-		Queue <TradeOrder> sell = new PriorityQueue<TradeOrder>(10, new PriceComparator());
+		buy = new PriorityQueue<TradeOrder>(10, new PriceComparator());
+		sell = new PriorityQueue<TradeOrder>(10, new PriceComparator());
 	}
 
 	//Returns a quote string for this stock. 

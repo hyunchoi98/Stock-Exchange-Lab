@@ -1,7 +1,7 @@
 import java.util.Queue;
 
 
-public class Trader {
+public class Trader implements Comparable {
 
 	Brokerage brokerage;
 	String name, pswd;
@@ -14,6 +14,8 @@ public class Trader {
 		this.brokerage = brokerage;
 		this.name = name;
 		this.pswd = pswd;
+		
+		
 	}
 	
 	//Returns the screen name for this trader.
@@ -79,6 +81,12 @@ public class Trader {
 	public void quit() {
 		brokerage.logout(this);
 		myWindow = null;
+	}
+
+	@Override
+	public int compareTo(Object o) {
+		
+		
 	}
 	
 	

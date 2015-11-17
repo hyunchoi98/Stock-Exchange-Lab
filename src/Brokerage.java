@@ -1,18 +1,19 @@
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 
 public class Brokerage implements Login {
 
 	StockExchange exchange;
-	TreeMap<String, String> traders;
-	TreeMap<String, String> loggedIn;
+	TreeMap<String, Trader> traders;
+	TreeSet<Trader> loggedIn;
 	
 	
 	//Constructs new brokerage affiliated with a given stock exchange.
 	public Brokerage(StockExchange exchange){
 		this.exchange = exchange;
-		traders = new TreeMap<String, String>();
-		loggedIn = new TreeMap<String, String>();
+		traders = new TreeMap<String, Trader>();
+		loggedIn = new TreeSet<Trader>();
 	}
 	
 	
@@ -27,11 +28,11 @@ public class Brokerage implements Login {
 		else if (password.length()<2 || password.length()>10) {
 			return -2;
 		}
-		else if (!traders.containsKey(name)){
+		else if (traders.containsKey(name)){
 			return -3;
 		}
 		else {
-			traders.put(name, password);
+			traders.put(name, new Trader(this, name, password));
 			return 0;
 		}
 		
@@ -43,14 +44,14 @@ public class Brokerage implements Login {
 		if (!traders.containsKey(name)) {
 			return -1;
 		}
-		else if(traders.get(name).equals(password)) {
+		else if(!traders.get(name).getPassword().equals(password)) {
 			return -2;
 		}
-		else if (loggedIn.containsKey(name)) {
+		else if (loggedIn.contains(name)) {
 			return -3;
 		}
 		else {
-			loggedIn.put(name, password);
+			loggedIn.add(traders.get(name));
 			return 0;
 		}
 	}
