@@ -18,6 +18,7 @@ public class Stock {
 	
 	
 	
+	
 
 	//Constructs a new stock with a given symbol, 
 	//company name, and starting price.
@@ -78,12 +79,79 @@ public class Stock {
 	public void placeOrder(TradeOrder order) {
 		if (order.isSell())
 			sell.add(order);
-		if (!order.isSell())
+		if (order.isBuy())
 			buy.add(order);
 		
 		Trader trader = order.getTrader();
 		trader.receiveMessage("Your order for " + order.getSymbol() +
-				"has been placed");
+				" has been placed");
+		
+	    if (order.isSell())
+	    	if (buy.size() > 0)
+		executeOrder(order);
+	    if (order.isBuy())
+	    	if (sell.size() > 0)
+		executeOrder(order);
+		
 	}
 	
-}
+	private void executeOrder(TradeOrder order)
+	{
+		
+		
+		int shares = order.getShares();
+		if (order.isSell())
+		{
+			for (TradeOrder price: buy)
+			{
+			if (order.getPrice() <= price.getPrice())
+			{	
+				
+			TradeOrder toSell = buy.remove();
+			
+			toSell.subtractShares(shares);
+			
+			if (toSell.getShares() > 0)
+				buy.add(toSell);
+			
+			Trader seller = order.getTrader();
+			seller.receiveMessage("You sold " + shares +
+					" shares of " + stockSymbol+ " for " + order.getPrice()
+					+ "$ a share");
+			
+			Trader buyer = price.getTrader();
+			buyer.receiveMessage("You bought " + shares +
+					" shares of " + stockSymbol + " for " + order.getPrice()
+					+ "$ a share");
+			}
+		}
+		
+		if (order.isBuy())
+		for (TradeOrder price: sell)
+		{	
+			if (order.getPrice() <= price.getPrice())
+
+			{
+			TradeOrder toBuy = sell.remove();
+			
+			toBuy.subtractShares(shares);
+			
+			if (toBuy.getShares() > 0)
+				sell.add(toBuy);	
+			
+			Trader buyer = order.getTrader();
+			buyer.receiveMessage("You bought " + shares +
+					" shares of " + stockSymbol);
+			
+			Trader seller = price.getTrader();
+			seller.receiveMessage("You sold " + shares +
+					" shares of " + stockSymbol + " for " + order.getPrice()
+					+ "$ a share");
+		}
+
+		
+	}
+	
+	}
+	}
+	}

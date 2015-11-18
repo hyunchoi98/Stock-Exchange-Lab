@@ -39,7 +39,7 @@ public class Brokerage implements Login {
 		}
 		
 		
-	};
+	}
 	
 	//Tries to login a trader with a given screen name and password.
 	public int login(String name, String password){
