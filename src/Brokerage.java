@@ -22,6 +22,8 @@ public class Brokerage implements Login {
 	//If succesful creates new trader object and 
 	//adds this trader to the map of traders(screen name as key)
 	public int addUser(String name, String password){
+		
+		
 		if (name.length()<4 || name.length()>10) {
 			return -1;
 		}
@@ -41,17 +43,20 @@ public class Brokerage implements Login {
 	
 	//Tries to login a trader with a given screen name and password.
 	public int login(String name, String password){
-		if (!traders.containsKey(name)) {
+		Trader trader = traders.get(name);
+		
+		if (trader == null) {
 			return -1;
 		}
-		else if(!traders.get(name).getPassword().equals(password)) {
+		else if(!trader.getPassword().equals(password)) {
 			return -2;
 		}
-		else if (loggedIn.contains(name)) {
+		else if (loggedIn.contains(trader)) {
 			return -3;
 		}
 		else {
 			loggedIn.add(traders.get(name));
+			trader.openWindow();
 			return 0;
 		}
 	}

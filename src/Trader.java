@@ -1,3 +1,4 @@
+import java.util.LinkedList;
 import java.util.Queue;
 
 
@@ -14,7 +15,7 @@ public class Trader implements Comparable {
 		this.brokerage = brokerage;
 		this.name = name;
 		this.pswd = pswd;
-		
+		this.mailbox = new LinkedList<String> ();
 		
 	}
 	
@@ -59,9 +60,22 @@ public class Trader implements Comparable {
 	public void receiveMessage (String msg) {
 		mailbox.add(msg);
 		
-		while(!mailbox.isEmpty()) {
-			myWindow.showMessage(mailbox.remove());
+		if (myWindow != null) {
+			for (String str: mailbox) {
+				myWindow.showMessage(str);
+			}
+			while (mailbox.size() >0) {
+				mailbox.remove();
+			}
 		}
+		
+		/**
+		if (myWindow!=null) {
+			while(!mailbox.isEmpty()) {
+				myWindow.showMessage(mailbox.remove());
+			}
+		}
+		*/
 	}
 	
 	
@@ -85,7 +99,7 @@ public class Trader implements Comparable {
 
 	@Override
 	public int compareTo(Object o) {
-		
+		return name.compareTo(((Trader)o).getName());
 		
 	}
 	

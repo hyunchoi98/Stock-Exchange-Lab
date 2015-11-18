@@ -47,7 +47,7 @@ public class Stock {
 		//500 Ask: none Bid: 12.50 size: 200
 		
 		String str = companyName + " (" + stockSymbol + ")" + " Price: " + stockPrice +
-				"hi" + highestSell + "low" + lowestSell + "vol" + volumeDay +"\n Ask: ";
+				"\nhi: " + highestSell + " low: " + lowestSell + " vol: " + volumeDay +"\nAsk: ";
 		
 		if (sell.peek()!=null) {
 			str += sell.peek().getPrice();
@@ -55,7 +55,7 @@ public class Stock {
 			str += sell.peek().getShares();
 		}
 		else {
-			str += "None";
+			str += "None ";
 		}
 		
 		str+= " Bid: ";
