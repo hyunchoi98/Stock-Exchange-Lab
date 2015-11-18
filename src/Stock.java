@@ -40,10 +40,12 @@ public class Stock {
 		// sample output
 		// Giggle.com (GGGL) Price: 12.00 hi: 14.50 lo: 9.00 vol:
 		// 500 Ask: none Bid: 12.50 size: 200
-
+		
+		
+		
 		String str = companyName + " (" + stockSymbol + ")" + " Price: "
 				+ stockPrice + "\nhi: " + highestSell + " low: " + lowestSell
-				+ " vol: " + volumeDay + "\nAsk: ";
+				+ " vol: " + volumeDay + "\nAsk: "   ;
 
 		if (sell.peek() != null) {
 			str += sell.peek().getPrice();
@@ -71,14 +73,23 @@ public class Stock {
 	// that placed the order that it has been placed by sending a message
 	public void placeOrder(TradeOrder order) {
 		if (order.isSell())
+		{
 			sell.add(order);
-		if (order.isBuy())
-			buy.add(order);
+		
 
 		Trader trader = order.getTrader();
-		trader.receiveMessage("Your order for " + order.getSymbol()
+		trader.receiveMessage("Your order to sell " + order.getShares() + ""
+				+ " shares of " +   order.getSymbol()
 				+ " has been placed");
-
+		}
+		if (order.isBuy())
+		{
+			buy.add(order);
+			Trader trader = order.getTrader();
+			trader.receiveMessage("Your order to buy " + order.getShares() + ""
+					+ " shares of " +   order.getSymbol()
+					+ " has been placed");
+		}
 		/**
 		 * if (order.isSell()) if (buy.size() > 0) executeOrder(order); if
 		 * (order.isBuy()) if (sell.size() > 0) executeOrder(order);
@@ -232,11 +243,11 @@ public class Stock {
 		String str = "";
 		
 		if (order.isSell())
-			str += "Sold ";
+			str += "You sold ";
 		else 
-			str += "Bought ";
+			str += "You bought ";
 			
-		str += shares + " shares of " + symbol + " at $" + price;
+		str += shares + " shares of " + symbol + " at $" + price + " - amt: " + (price * shares);
 		
 		order.getTrader().receiveMessage(str);
 		

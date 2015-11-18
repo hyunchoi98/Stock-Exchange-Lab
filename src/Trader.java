@@ -16,7 +16,7 @@ public class Trader implements Comparable {
 		this.name = name;
 		this.pswd = pswd;
 		this.mailbox = new LinkedList<String> ();
-		
+		this.mailbox.add("Welcome to SafeTrade!");
 	}
 	
 	//Returns the screen name for this trader.
