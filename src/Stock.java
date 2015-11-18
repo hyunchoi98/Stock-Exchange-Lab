@@ -26,8 +26,8 @@ public class Stock {
 		highestSell = price;
 		stockPrice = price;
 		volumeDay = 0;
-		buy = new PriorityQueue<TradeOrder>(10, new PriceComparator());
-		sell = new PriorityQueue<TradeOrder>(10, new PriceComparator());
+		buy = new PriorityQueue<TradeOrder>(10, new PriceComparator(false)); //largest prices first
+		sell = new PriorityQueue<TradeOrder>(10, new PriceComparator(false));
 	}
 
 	// Returns a quote string for this stock.
@@ -93,6 +93,7 @@ public class Stock {
 		
 		outerloop:
 		while (!sell.isEmpty()) {
+			System.out.println("FIRST WHILE");
 			double sellPrice = 0;
 			boolean finishedSell = false;;
 			
@@ -106,6 +107,7 @@ public class Stock {
 			
 			
 			while (!buy.isEmpty()) {
+				System.out.println("SECOND WHILE");
 				double buyPrice = 0;
 				
 				if (buy.peek().isMarket()) {
@@ -116,11 +118,13 @@ public class Stock {
 				}
 				
 				if (sellPrice <= buyPrice) {
+					System.out.println("buy price >= sellprice");
 					System.out.println(sell.peek());
 					int numSells = sell.peek().getShares();
 					int numBuys = buy.peek().getShares();
 					
 					if (numBuys > numSells) {
+						System.out.println("More buys");
 						buy.peek().subtractShares(numSells);
 						volumeDay += numSells;
 						finishedSell = true;
@@ -130,6 +134,7 @@ public class Stock {
 						//messages
 					}
 					else if (numBuys < numSells) {
+						System.out.println("More sells");
 						sell.peek().subtractShares(numBuys);
 						volumeDay += numBuys;
 						
@@ -140,6 +145,7 @@ public class Stock {
 						//message
 					}
 					else {
+						System.out.println("SAME NUM");
 						volumeDay += numBuys;
 						finishedSell = true;
 						
