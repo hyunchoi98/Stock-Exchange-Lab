@@ -79,17 +79,97 @@ public class Stock {
 		trader.receiveMessage("Your order for " + order.getSymbol()
 				+ " has been placed");
 
-		if (order.isSell())
-			if (buy.size() > 0)
-				executeOrder(order);
-		if (order.isBuy())
-			if (sell.size() > 0)
-				executeOrder(order);
+		/**
+		 * if (order.isSell()) if (buy.size() > 0) executeOrder(order); if
+		 * (order.isBuy()) if (sell.size() > 0) executeOrder(order);
+		 */
+		executeOrders();
 
 	}
 
-	private void executeOrder(TradeOrder order) {
-
+	private void executeOrders() {
+		if (sell.isEmpty() || buy.isEmpty()) 
+			return;
+		
+		outerloop:
+		while (!sell.isEmpty()) {
+			double sellPrice = 0;
+			boolean finishedSell = false;;
+			
+			if (sell.peek().isMarket()) {
+				sellPrice = lowestSell;
+			}    			
+			else {
+				sellPrice = sell.peek().getPrice();
+			}
+			
+			
+			
+			while (!buy.isEmpty()) {
+				double buyPrice = 0;
+				
+				if (buy.peek().isMarket()) {
+					buyPrice = highestSell;
+				}
+				else {
+					buyPrice = buy.peek().getPrice();
+				}
+				
+				if (sellPrice <= buyPrice) {
+					System.out.println(sell.peek());
+					int numSells = sell.peek().getShares();
+					int numBuys = buy.peek().getShares();
+					
+					if (numBuys > numSells) {
+						buy.peek().subtractShares(numSells);
+						volumeDay += numSells;
+						finishedSell = true;
+						tradeMsg(buy.peek(), numSells, buy.peek().getSymbol(), buyPrice);
+						tradeMsg(sell.peek(), numSells, buy.peek().getSymbol(), buyPrice);
+						
+						//messages
+					}
+					else if (numBuys < numSells) {
+						sell.peek().subtractShares(numBuys);
+						volumeDay += numBuys;
+						
+						
+						tradeMsg(buy.peek(), numBuys, buy.peek().getSymbol(), buyPrice);
+						tradeMsg(sell.peek(), numBuys, buy.peek().getSymbol(), buyPrice);
+						buy.remove();
+						//message
+					}
+					else {
+						volumeDay += numBuys;
+						finishedSell = true;
+						
+						tradeMsg(buy.peek(), numSells, buy.peek().getSymbol(), buyPrice);
+						tradeMsg(sell.peek(), numSells, buy.peek().getSymbol(), buyPrice);
+						buy.remove();
+						//message
+					}
+					if (finishedSell) {
+						sell.remove();
+					}
+					
+					
+				}
+				else { //no cheap enough sell order
+					break outerloop;
+				}
+				
+				
+				
+			}
+			
+			//need to remove
+		}
+		
+		
+		
+		
+		
+		/**
 		int shares = order.getShares();
 		System.out.println(shares);
 		if (order.isSell()) {
@@ -137,7 +217,24 @@ public class Stock {
 
 			}
 		}
+		*/
 
 		
 	}
+	
+	private void tradeMsg (TradeOrder order, int shares, String symbol, double price) {
+		String str = "";
+		
+		if (order.isSell())
+			str += "Sold ";
+		else 
+			str += "Bought ";
+			
+		str += shares + " shares of " + symbol + " at $" + price;
+		
+		order.getTrader().receiveMessage(str);
+		
+		
+	}
+	
 }
